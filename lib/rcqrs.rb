@@ -1,3 +1,4 @@
+require 'uuidtools'
 require 'active_support'
 require 'eventful'
 

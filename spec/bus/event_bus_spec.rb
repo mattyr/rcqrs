@@ -1,6 +1,6 @@
-require File.join(File.dirname(__FILE__), '../spec_helper')
+require 'spec_helper'
 
-module Bus  
+module Bus
   describe EventBus do
     context "when publishing events" do
       before(:each) do
@@ -10,7 +10,7 @@ module Bus
       end
 
       it "should execute handler(s) for raised event" do
-        @router.handled.should == true
+        expect(@router.handled).to be_truthy
       end
     end
   end

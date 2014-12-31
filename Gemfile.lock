@@ -5,6 +5,7 @@ PATH
       activerecord (~> 4.2.0)
       activesupport (~> 4.2.0)
       eventful (= 1.0.1)
+      uuidtools (~> 2.1.5)
 
 GEM
   remote: http://rubygems.org/
@@ -48,6 +49,7 @@ GEM
     thread_safe (0.3.4)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uuidtools (2.1.5)
 
 PLATFORMS
   ruby

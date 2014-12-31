@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../spec_helper')
+require 'spec_helper'
 
 module EventStore
   module Adapters
@@ -17,61 +17,61 @@ module EventStore
 
         it "should persist a single event provider (aggregate)" do
           count = @adapter.provider_connection.select_value('select count(*) from event_providers').to_i
-          count.should == 1
+          expect(count).to eq(1)
         end
 
         it "should persist a single event" do
           count = @adapter.event_connection.select_value('select count(*) from events').to_i
-          count.should == 1
+          expect(count).to eq(1)
         end
 
-        specify { @provider.aggregate_type.should == 'Domain::Company' }
-        specify { @provider.aggregate_id.should == @aggregate.guid }
-        specify { @provider.version.should == 1 }
-        specify { @provider.events.count.should == 1 }
-        
+        specify { expect(@provider.aggregate_type).to eq('Domain::Company') }
+        specify { expect(@provider.aggregate_id).to eq(@aggregate.guid) }
+        specify { expect(@provider.version).to eq(1) }
+        specify { expect(@provider.events.count).to eq(1) }
+
         context "persisted event" do
           before(:each) do
             @event = @provider.events.first
           end
-                    
-          specify { @event.aggregate_id.should == @aggregate.guid }
-          specify { @event.event_type.should == 'Events::CompanyCreatedEvent' }        
-          specify { @event.version.should == 1 }
+
+          specify { expect(@event.aggregate_id).to eq(@aggregate.guid) }
+          specify { expect(@event.event_type).to eq('Events::CompanyCreatedEvent') }
+          specify { expect(@event.version).to eq(1) }
         end
       end
-      
+
       context "when saving incorrect aggregate version" do
         before(:each) do
           @adapter.save(@aggregate)
         end
-        
+
         it "should raise AggregateConcurrencyError exception" do
-          proc { @adapter.save(@aggregate) }.should raise_error(AggregateConcurrencyError)
+          expect(proc { @adapter.save(@aggregate) }).to raise_error(AggregateConcurrencyError)
         end
       end
-      
+
       context "when finding events" do
         it "should return nil when aggregate not found" do
-          @adapter.find('').should == nil
+          expect(@adapter.find('')).to be_nil
         end
       end
-      
+
       context "when saving aggregate within a transaction" do
         before (:each) do
           begin
             @adapter.transaction do
               @adapter.save(@aggregate)
-              event_provider_count.should == 1
-              event_count.should == 1
-            
+              expect(event_provider_count).to eq(1)
+              expect(event_count).to eq(1)
+
               raise 'rollback'
             end
           rescue
             # expected rollback exception
           end
         end
-        
+
         def event_provider_count
           @adapter.provider_connection.select_value('select count(*) from event_providers').to_i
         end
@@ -79,13 +79,13 @@ module EventStore
         def event_count
           @adapter.event_connection.select_value('select count(*) from events').to_i
         end
-        
+
         it "should rollback saved event provider" do
-          event_provider_count.should == 0
+          expect(event_provider_count).to eq(0)
         end
-        
+
         it "should rollback saved events" do
-          event_count.should == 0
+          expect(event_count).to eq(0)
         end
       end
     end

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '../../spec_helper')
+require 'spec_helper'
 
 module Events
   module Handlers
@@ -6,16 +6,16 @@ module Events
       before(:each) do
         @handler = CompanyCreatedHandler.new
       end
-      
+
       context "when executing" do
         before(:each) do
           @event = Events::CompanyCreatedEvent.new(:guid => Rcqrs::Guid.create, :name => 'ACME corp')
           @company = @handler.execute(@event)
         end
-        
-        specify { @company.should be_instance_of(Reporting::Company) }
-        specify { @company.guid.should == @event.guid }
-        specify { @company.name.should == @event.name }
+
+        specify { expect(@company).to be_instance_of(Reporting::Company) }
+        specify { expect(@company.guid).to eq(@event.guid) }
+        specify { expect(@company.name).to eq(@event.name) }
       end
     end
   end

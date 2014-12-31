@@ -1,9 +1,7 @@
-require 'rubygems'
-require 'bundler'
+require 'bundler/setup'
+Bundler.setup
 
-Bundler.setup(:default, :spec)
-
-require File.join(File.dirname(__FILE__), '/../lib/rcqrs')
+require 'rcqrs'
 
 require 'mock_router'
 require 'commands/create_company_command'
@@ -14,3 +12,9 @@ require 'events/handlers/company_created_handler'
 require 'domain/invoice'
 require 'domain/company'
 require 'reporting/company'
+
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+end
