@@ -2,9 +2,6 @@ require File.join(File.dirname(__FILE__), '../spec_helper')
 
 # convert ActiveModel lint tests to RSpec
 shared_examples_for "ActiveModel" do
-  require 'test/unit/assertions'
-  
-  include Test::Unit::Assertions
   include ActiveModel::Lint::Tests
 
   # to_s is to support ruby-1.9
