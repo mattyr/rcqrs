@@ -11,7 +11,7 @@ module EventStore
     context "when saving an aggregate" do
       before(:each) do
         @domain_event_raised = false
-        @repository.on(:domain_event) {|source, event| @domain_event_raised = true }
+        @repository.on(:domain_event) {|event| @domain_event_raised = true }
         @repository.save(@aggregate)
       end
 

@@ -23,3 +23,5 @@ require 'rcqrs/events/domain_event'
 require 'rcqrs/events/handlers/base_handler'
 
 require 'rcqrs/domain/aggregate_root'
+
+require 'rcqrs/gateway'
