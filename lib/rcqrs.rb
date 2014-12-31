@@ -1,6 +1,6 @@
 require 'uuidtools'
 require 'active_support'
-require 'eventful'
+require 'wisper'
 
 require 'rcqrs/support/guid'
 require 'rcqrs/support/serialization'

@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport", "~> 4.2.0"
   spec.add_dependency "activerecord", "~> 4.2.0"
-  spec.add_dependency "eventful", "1.0.1"
+  spec.add_dependency "wisper", "~> 1.6.0"
   spec.add_dependency "uuidtools", "~> 2.1.5"
 
   spec.add_development_dependency "bundler", "~> 1.7"
