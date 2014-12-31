@@ -8,6 +8,18 @@ module Rcqrs
       instance.dispatch(command)
     end
 
+    def self.repository
+      instance.repository
+    end
+
+    def self.command_bus
+      instance.command_bus
+    end
+
+    def self.event_bus
+      instance.event_bus
+    end
+
     attr_reader :repository, :command_bus, :event_bus
 
     # Dispatch commands to the bus within a transaction
