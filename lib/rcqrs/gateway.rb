@@ -8,6 +8,8 @@ module Rcqrs
       instance.dispatch(command)
     end
 
+    attr_reader :repository, :command_bus, :event_bus
+
     # Dispatch commands to the bus within a transaction
     def dispatch(command)
       @repository.transaction do
