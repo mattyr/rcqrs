@@ -5,7 +5,7 @@ module Domain
         include InstanceMethods
       end
     end
-    
+
     def create_from_event(event)
       self.new.tap do |aggregate|
         aggregate.send(:apply, event)
@@ -34,7 +34,7 @@ module Domain
       def pending_events
         @pending_events.sort_by {|e| e.version }
       end
-      
+
       # Are there any
       def pending_events?
         @pending_events.any?
@@ -44,7 +44,7 @@ module Domain
         @pending_events = []
         @source_version = @version
       end
-  
+
     protected
 
       def initialize
@@ -53,14 +53,14 @@ module Domain
         @pending_events = []
         @event_handlers = {}
       end
-      
+
       def apply(event)
         apply_event(event)
         update_event(event)
-        
+
         @pending_events << event
       end
-      
+
     private
 
       # Replay an existing event loaded from storage
@@ -77,14 +77,14 @@ module Domain
       def update_event(event)
         event.aggregate_id = @guid
         event.version = @version
-        event.timestamp = Time.now.gmtime 
+        event.timestamp = Time.now.gmtime
       end
-      
+
       def invoke_event_handler(event)
         target = handler_for(event.class)
         self.send(target, event)
       end
-      
+
       # Map event type to method name: CompanyRegisteredEvent => on_company_registered(event)
       def handler_for(event_type)
         @event_handlers[event_type] ||= begin
