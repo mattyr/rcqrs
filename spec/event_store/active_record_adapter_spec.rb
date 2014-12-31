@@ -4,6 +4,11 @@ module EventStore
   module Adapters
     describe ActiveRecordAdapter do
       before(:each) do
+        # HACK? it seems some operations in AR need AR::Base to determine
+        # things like column names. without this we get errors like "no
+        # connection pool for ActiveRecord::Base".  This could be a bug or an
+        # architectural issue with AR connection management.
+        ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
         # Use an in-memory sqlite db
         @adapter = ActiveRecordAdapter.new(:adapter => 'sqlite3', :database => ':memory:')
         @aggregate = Domain::Company.create('ACME Corp')
@@ -73,11 +78,13 @@ module EventStore
         end
 
         def event_provider_count
-          @adapter.provider_connection.select_value('select count(*) from event_providers').to_i
+          #@adapter.provider_connection.select_value('select count(*) from event_providers').to_i
+          EventProvider.count
         end
 
         def event_count
-          @adapter.event_connection.select_value('select count(*) from events').to_i
+          #@adapter.event_connection.select_value('select count(*) from events').to_i
+          Event.count
         end
 
         it "should rollback saved event provider" do
