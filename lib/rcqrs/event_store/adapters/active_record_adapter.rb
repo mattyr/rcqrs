@@ -9,8 +9,9 @@ module EventStore
         where(:aggregate_id => guid).first
       end
 
+      # we convert this to an array immediately so methods like map! work
       def events
-        Event.for(aggregate_id)
+        Event.for(aggregate_id).to_a
       end
     end
 
