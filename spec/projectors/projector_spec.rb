@@ -25,6 +25,10 @@ module Projectors
       it_behaves_like "a successful projection"
     end
 
+    it "does not raise error for ignored events" do
+      expect( -> {projector.project(Events::InvoiceCreatedEvent.new) }).to_not raise_error
+    end
+
     context "published on event bus" do
       before { Bus::EventBus.new(MockRouter.new).publish(event) }
 

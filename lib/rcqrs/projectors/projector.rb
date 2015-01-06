@@ -5,7 +5,9 @@ module Projectors
     end
 
     def project(event)
-      send(handler_method_name_for(event.class), event)
+      if respond_to?(handler_method_name_for(event.class))
+        send(handler_method_name_for(event.class), event)
+      end
     end
 
     private
