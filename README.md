@@ -66,13 +66,19 @@ such as `CompanyRegisteredEvent`
 - subscribes to domain events
 - persist domain events to event store
 - routes events to registered handler(s) (can have more than one handler per event)
+- also routes events to all projectors
 
 ###Event Handler
 such as `CompanyRegisteredHandler`
 
-- update de-normalised reporting data store(s)
 - email sending
 - execute long running processes (e.g. 3rd party APIs, file upload)
+- trigger followup commands
+
+###Projectors
+
+- receives all domain events
+- update de-normalised reporting data store(s)
 
 ###Event Store
 
