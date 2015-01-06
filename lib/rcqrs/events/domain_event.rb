@@ -9,7 +9,7 @@ module Events
     def self.target_name(demodulize = true)
       target = name.to_s
       target = target.demodulize if demodulize
-      target.underscore.gsub(/_event$/, '')
+      target.gsub(/::/, '_').underscore.gsub(/_event$/, '')
     end
   end
 end
