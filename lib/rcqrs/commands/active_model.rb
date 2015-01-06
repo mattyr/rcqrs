@@ -17,5 +17,9 @@ module Commands
     def persisted?
       false
     end
+
+    def broadcast_domain_event(event)
+      broadcast(:domain_event, event)
+    end
   end
 end

@@ -6,16 +6,10 @@ module Bus
 
     # Dispatch command to registered handler
     def dispatch(command)
-      Rcqrs::Context.current.command = command
+      raise Commands::InvalidCommand unless command.valid?
 
-      begin
-        raise Commands::InvalidCommand unless command.valid?
-
-        handler = @router.handler_for(command, @repository)
-        handler.execute(command)
-      ensure
-        Rcqrs::Context.current.clear
-      end
+      handler = @router.handler_for(command, @repository)
+      handler.execute(command)
     end
   end
 end

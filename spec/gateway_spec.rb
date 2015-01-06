@@ -16,9 +16,11 @@ describe Rcqrs::Gateway do
 
   context "after processing commands" do
     before do
+      allow(Rcqrs::Context.current).to receive(:command=).and_call_original
+      allow(Rcqrs::Context.current).to receive(:clear).and_call_original
       Reporting::Company.instances = []
-      command = Commands::CreateCompanyCommand.new(name: 'ACME corp')
-      Rcqrs::Gateway.publish(command)
+      @command = Commands::CreateCompanyCommand.new(name: 'ACME corp')
+      Rcqrs::Gateway.publish(@command)
     end
 
     it "should update the event store" do
@@ -28,6 +30,12 @@ describe Rcqrs::Gateway do
 
     it "should have triggered event handlers" do
       expect(Reporting::Company.instances.length).to eq(1)
+    end
+
+    it "should set and then clear the current command context" do
+      expect(Rcqrs::Context.current).to have_received(:command=).with(@command)
+      expect(Rcqrs::Context.current).to have_received(:command=).with(nil)
+      expect(Rcqrs::Context.current).to have_received(:clear)
     end
   end
 end

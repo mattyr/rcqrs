@@ -28,7 +28,7 @@ module EventStore
       end
 
       it "should raise domain event on command in context" do
-        expect(@command).to have_received(:broadcast).once
+        expect(@command).to have_received(:broadcast_domain_event).once
       end
     end
 

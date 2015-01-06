@@ -24,8 +24,13 @@ module Rcqrs
 
     # Dispatch commands to the bus within a transaction
     def dispatch(command)
-      @repository.transaction do
-        @command_bus.dispatch(command)
+      Rcqrs::Context.current.command = command
+      begin
+        @repository.transaction do
+          @command_bus.dispatch(command)
+        end
+      ensure
+        Rcqrs::Context.current.clear
       end
     end
 

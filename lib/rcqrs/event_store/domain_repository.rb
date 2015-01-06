@@ -77,7 +77,7 @@ module EventStore
         broadcast(:domain_event, event)
         # if there's a command context, broadcast through that as well
         if !Rcqrs::Context.current.command.nil?
-          Rcqrs::Context.current.command.broadcast(:domain_event, event)
+          Rcqrs::Context.current.command.broadcast_domain_event(event)
         end
       end
     end
