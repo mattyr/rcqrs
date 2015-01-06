@@ -22,7 +22,7 @@ module Commands
       # broadcast a generic event
       broadcast(:domain_event, event)
       # and also a specific one (makes for easier one-off listeners)
-      broadcast(event.class.target_name.to_sym, event)
+      broadcast(event.class.target_name(false).to_sym, event)
     end
   end
 end
