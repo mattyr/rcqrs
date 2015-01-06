@@ -1,13 +1,13 @@
 module Bus
   class MissingHandler < StandardError; end
-  
+
   class Router
-  protected
+    protected
     def handler_class_for(target)
       handler_name = "#{target.class.name.gsub(/Event$|Command$/, '')}Handler"
       handler_name.gsub!(/::/, '::Handlers::') if handler_name =~ /::/
       handler_name.constantize
-    rescue NameError => ex  
+    rescue NameError
       raise MissingHandler.new("No handler found for #{target.class.name} (expected #{handler_name})")
     end
 
@@ -23,7 +23,7 @@ module Bus
       handler_class.new(repository)
     end
   end
-  
+
   class EventRouter < Router
     # Events may have one or more handlers
     def handlers_for(target)
