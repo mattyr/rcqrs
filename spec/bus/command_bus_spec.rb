@@ -24,6 +24,13 @@ module Bus
           @bus.dispatch(subject)
           expect(@router.handled).to be_truthy
         end
+
+        it "should set and then clear the current command context" do
+          expect(Rcqrs::Context.current).to receive(:command=).with(subject).and_call_original
+          expect(Rcqrs::Context.current).to receive(:command=).with(nil).and_call_original
+          expect(Rcqrs::Context.current).to receive(:clear).and_call_original
+          @bus.dispatch(subject)
+        end
       end
     end
   end

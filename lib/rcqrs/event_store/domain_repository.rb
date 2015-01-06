@@ -73,7 +73,13 @@ module EventStore
         tracked.commit
       end
 
-      committed_events.sort_by(&:timestamp).each {|event| broadcast(:domain_event, event) }
+      committed_events.sort_by(&:timestamp).each do |event|
+        broadcast(:domain_event, event)
+        # if there's a command context, broadcast through that as well
+        if !Rcqrs::Context.current.command.nil?
+          Rcqrs::Context.current.command.broadcast(:domain_event, event)
+        end
+      end
     end
 
     # Get unsaved events for all tracked aggregates, ordered by time applied

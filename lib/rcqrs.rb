@@ -27,4 +27,6 @@ require 'rcqrs/projectors/projector'
 
 require 'rcqrs/domain/aggregate_root'
 
+require 'rcqrs/context'
+
 require 'rcqrs/gateway'

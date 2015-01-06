@@ -3,10 +3,14 @@ require 'spec_helper'
 module EventStore
   describe DomainRepository do
     before(:each) do
+      @command = spy
+      Rcqrs::Context.current.command = @command
       @storage = Adapters::InMemoryAdapter.new
       @repository = DomainRepository.new(@storage)
       @aggregate = Domain::Company.create('ACME Corp.')
     end
+
+    after { Rcqrs::Context.current.clear }
 
     context "when saving an aggregate" do
       before(:each) do
@@ -21,6 +25,10 @@ module EventStore
 
       it "should raise domain event" do
         expect(@domain_event_raised).to be_truthy
+      end
+
+      it "should raise domain event on command in context" do
+        expect(@command).to have_received(:broadcast).once
       end
     end
 
