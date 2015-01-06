@@ -22,6 +22,9 @@ require 'rcqrs/commands/handlers/base_handler'
 require 'rcqrs/events/domain_event'
 require 'rcqrs/events/handlers/base_handler'
 
+require 'rcqrs/projectors/registry'
+require 'rcqrs/projectors/projector'
+
 require 'rcqrs/domain/aggregate_root'
 
 require 'rcqrs/gateway'

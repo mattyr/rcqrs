@@ -11,6 +11,7 @@ require 'events/invoice_created_event'
 require 'events/handlers/company_created_handler'
 require 'domain/invoice'
 require 'domain/company'
+require 'projectors/reporting_projector'
 require 'reporting/company'
 
 RSpec.configure do |config|
