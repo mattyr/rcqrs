@@ -2,24 +2,25 @@ module Projectors
   class Registry
     include Singleton
 
-    def self.register(projector)
-      instance.register(projector)
+    def self.register(klass)
+      instance.register(klass)
     end
 
     def self.projectors
-      instance.projectors
+      instance.projector_classes.map{|klass| klass.new}
     end
 
-    attr_reader :projectors
+    attr_reader :projector_classes
 
-    def register(projector_class)
-      @projectors << projector_class.new
+    def register(klass)
+      @projector_classes << klass
+      @projector_classes.uniq!
     end
 
     private
 
     def initialize
-      @projectors = []
+      @projector_classes = []
     end
   end
 end
