@@ -19,5 +19,9 @@ module Events
         expect(deserialized.guid).to eq(@event.guid)
       end
     end
+
+    it "should have an appropriate target name" do
+      expect(CompanyCreatedEvent.target_name).to eq("company_created")
+    end
   end
 end

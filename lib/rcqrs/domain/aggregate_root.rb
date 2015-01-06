@@ -87,10 +87,11 @@ module Domain
 
       # Map event type to method name: CompanyRegisteredEvent => on_company_registered(event)
       def handler_for(event_type)
-        @event_handlers[event_type] ||= begin
-          target = event_type.to_s.demodulize.underscore.sub(/_event$/, '')
-          "on_#{target}".to_sym
-        end
+        @event_handlers[event_type] ||=
+          begin
+            target = event_type.target_name
+            "on_#{target}".to_sym
+          end
       end
     end
   end
