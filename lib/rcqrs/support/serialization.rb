@@ -1,8 +1,6 @@
 module Rcqrs
   module Serialization
-    def self.included(base)
-      base.extend ClassMethods
-    end
+    extend ActiveSupport::Concern
 
     def to_json(attributes=self.attributes)
       ActiveSupport::JSON.encode(attributes)
