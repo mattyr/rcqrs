@@ -1,6 +1,6 @@
 module Domain
   class Company
-    extend Rcqrs::Domain::AggregateRoot
+    include Rcqrs::Domain::AggregateRoot
 
     attr_reader :name
     attr_reader :invoices
