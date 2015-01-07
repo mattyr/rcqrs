@@ -1,6 +1,6 @@
 require 'active_record'
 
-module EventStore
+module Rcqrs::EventStore
   module Adapters
     # Represents every aggregate created
     class EventProvider < ActiveRecord::Base
@@ -19,7 +19,7 @@ module EventStore
       scope :for, lambda { |guid| where(:aggregate_id => guid).order(:version) }
     end
 
-    class ActiveRecordAdapter < EventStore::DomainEventStorage
+    class ActiveRecordAdapter < DomainEventStorage
       def initialize(options={})
         options.reverse_merge!(:adapter => 'sqlite3', :database => 'events.db')
         establish_connection(options)

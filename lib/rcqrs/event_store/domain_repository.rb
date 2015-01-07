@@ -1,4 +1,4 @@
-module EventStore
+module Rcqrs::EventStore
   class AggregateNotFound < StandardError; end
   class AggregateConcurrencyError < StandardError; end
   class UnknownAggregateClass < StandardError; end

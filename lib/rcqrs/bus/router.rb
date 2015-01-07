@@ -1,4 +1,4 @@
-module Bus
+module Rcqrs::Bus
   class MissingHandler < StandardError; end
 
   class Router

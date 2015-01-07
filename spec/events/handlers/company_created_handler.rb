@@ -1,6 +1,6 @@
 module Events
   module Handlers
-    class CompanyCreatedHandler < BaseHandler
+    class CompanyCreatedHandler < Rcqrs::Events::Handlers::BaseHandler
       def execute(event)
       end
     end

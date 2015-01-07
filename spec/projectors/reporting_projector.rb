@@ -1,6 +1,6 @@
 module Projectors
   class ReportingProjector
-    include Projectors::Projector
+    include Rcqrs::Projectors::Projector
 
     def on_company_created(event)
       ::Reporting::Company.new(event.guid, event.name)

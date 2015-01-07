@@ -1,4 +1,4 @@
-module EventStore
+module Rcqrs::EventStore
   class DomainEventStorage
     def find(guid)
       raise 'method to be implemented in adapter'

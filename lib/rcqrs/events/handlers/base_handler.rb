@@ -1,4 +1,4 @@
-module Events
+module Rcqrs::Events
   module Handlers
     class BaseHandler
       def execute(event)

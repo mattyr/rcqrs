@@ -1,11 +1,11 @@
 require 'active_record'
 
-module EventStore
+module Rcqrs::EventStore
   module Adapters
     module InMemory
       class EventProvider
         attr_reader :aggregate_id, :aggregate_type, :version, :events
-      
+
         def initialize(aggregate)
           @aggregate_id = aggregate.guid
           @aggregate_type = aggregate.class.name
@@ -13,10 +13,10 @@ module EventStore
           @events = aggregate.pending_events.map {|e| Event.new(e) }
         end
       end
-    
+
       class Event
         attr_reader :aggregate_id, :event_type, :version, :data
-      
+
         def initialize(event)
           @aggregate_id = event.aggregate_id
           @event_type = event.class.name
@@ -25,14 +25,14 @@ module EventStore
         end
       end
     end
-    
-    class InMemoryAdapter < EventStore::DomainEventStorage
+
+    class InMemoryAdapter < DomainEventStorage
       attr_reader :storage
-      
+
       def initialize(options={})
         @storage = {}
       end
-      
+
       def find(guid)
         @storage[guid]
       end

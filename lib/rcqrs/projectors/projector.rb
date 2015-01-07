@@ -1,7 +1,7 @@
-module Projectors
+module Rcqrs::Projectors
   module Projector
     def self.included(base)
-      Projectors::Registry.register(base)
+      Rcqrs::Projectors::Registry.register(base)
     end
 
     def project(event)

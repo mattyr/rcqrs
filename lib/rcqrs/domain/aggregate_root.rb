@@ -1,4 +1,4 @@
-module Domain
+module Rcqrs::Domain
   module AggregateRoot
     def self.extended(base)
       base.class_eval do

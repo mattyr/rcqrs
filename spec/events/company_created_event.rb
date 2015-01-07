@@ -1,5 +1,5 @@
 module Events
-  class CompanyCreatedEvent < DomainEvent
+  class CompanyCreatedEvent < Rcqrs::Events::DomainEvent
     attr_reader :guid, :name
 
     initializer :guid, :name

@@ -1,4 +1,4 @@
-module Commands
+module Rcqrs::Commands
   module ActiveModel
     def self.extended(base)
       base.class_eval do
@@ -9,7 +9,7 @@ module Commands
         include Wisper::Publisher
 
         extend ::Rcqrs::Initializer
-        include Commands::ActiveModel
+        include ::Rcqrs::Commands::ActiveModel
       end
     end
 

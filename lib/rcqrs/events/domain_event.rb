@@ -1,4 +1,4 @@
-module Events
+module Rcqrs::Events
   class DomainEvent
     extend Rcqrs::Initializer
     include Rcqrs::Serialization

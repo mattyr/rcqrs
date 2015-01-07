@@ -1,4 +1,4 @@
-module Bus
+module Rcqrs::Bus
   class EventBus
     def initialize(router)
       @router = router
@@ -19,7 +19,7 @@ module Bus
     end
 
     def publish_to_projectors(event)
-      Projectors::Registry.projectors.each do |projector|
+      Rcqrs::Projectors::Registry.projectors.each do |projector|
         projector.project(event)
       end
     end

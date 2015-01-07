@@ -1,4 +1,4 @@
-module Commands
+module Rcqrs::Commands
   module Handlers
     class BaseHandler
       def initialize(repository)

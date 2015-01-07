@@ -1,6 +1,6 @@
 module Commands
   class CreateCompanyCommand
-    extend ActiveModel
+    extend Rcqrs::Commands::ActiveModel
 
     attr_reader :name
     validates_presence_of :name

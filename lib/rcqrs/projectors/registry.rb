@@ -1,4 +1,4 @@
-module Projectors
+module Rcqrs::Projectors
   class Registry
     include Singleton
 

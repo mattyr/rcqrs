@@ -31,7 +31,7 @@ module Projectors
     end
 
     context "published on event bus" do
-      before { Bus::EventBus.new(MockRouter.new).publish(event) }
+      before { Rcqrs::Bus::EventBus.new(MockRouter.new).publish(event) }
 
       it_behaves_like "a successful projection"
     end
