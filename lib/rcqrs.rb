@@ -3,7 +3,6 @@ require 'active_support'
 require 'wisper'
 
 require 'rcqrs/support/guid'
-require 'rcqrs/support/serialization'
 require 'rcqrs/support/initializer'
 
 require 'rcqrs/event_store/domain_event_storage'

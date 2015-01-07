@@ -103,7 +103,7 @@ module Rcqrs::EventStore
 
     # Create a new instance of the domain event from the serialized json
     def create_event(event)
-      event.event_type.constantize.from_json(event.data).tap do |domain_event|
+      event.event_type.constantize.new.from_json(event.data).tap do |domain_event|
         domain_event.version = event.version.to_i
         domain_event.aggregate_id = event.aggregate_id.to_s
       end

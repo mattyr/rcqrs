@@ -50,6 +50,10 @@ module Rcqrs
           end
         end
 
+        define_method :attributes= do |attrs|
+          attrs.each{|k,v| instance_variable_set("@#{k}", v)}
+        end
+
         define_method :attributes_to_json do
           to_json(attributes)
         end

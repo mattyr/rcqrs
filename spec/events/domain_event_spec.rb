@@ -13,7 +13,7 @@ module Events
       end
 
       it "should deserialize from json" do
-        deserialized = CompanyCreatedEvent.from_json(@event.to_json)
+        deserialized = CompanyCreatedEvent.new.from_json(@event.to_json)
 
         expect(deserialized.name).to eq(@event.name)
         expect(deserialized.guid).to eq(@event.guid)

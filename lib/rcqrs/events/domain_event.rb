@@ -1,7 +1,7 @@
 module Rcqrs::Events
   class DomainEvent
     include Rcqrs::Initializer
-    include Rcqrs::Serialization
+    include ActiveModel::Serializers::JSON
 
     attr_accessor :aggregate_id, :version, :timestamp
 
