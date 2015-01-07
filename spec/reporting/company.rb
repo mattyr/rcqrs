@@ -1,6 +1,6 @@
 module Reporting
   class Company
-    extend Rcqrs::Initializer
+    include Rcqrs::Initializer
 
     cattr_accessor(:instances) { [] }
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Rcqrs
   class Car
-    extend Initializer
+    include Initializer
 
     attr_reader :manufacturer, :model, :bhp, :ps
 
@@ -12,7 +12,7 @@ module Rcqrs
   end
 
   class Bike
-    extend Initializer
+    include Initializer
     initializer :manufacturer, :attr_reader => true
   end
 

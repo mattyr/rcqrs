@@ -1,6 +1,6 @@
 module Domain
   class Expense
-    extend Rcqrs::Initializer
+    include Rcqrs::Initializer
     initializer :date, :description, :gross, :vat, :attr_reader => true
   end
 end

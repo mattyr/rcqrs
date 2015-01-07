@@ -8,7 +8,7 @@ module Rcqrs::Commands
         extend ::ActiveModel::Naming
         include Wisper::Publisher
 
-        extend ::Rcqrs::Initializer
+        include ::Rcqrs::Initializer
         include ::Rcqrs::Commands::ActiveModel
       end
     end
