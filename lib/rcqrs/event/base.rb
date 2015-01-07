@@ -1,5 +1,5 @@
-module Rcqrs::Events
-  class DomainEvent
+module Rcqrs::Event
+  class Base
     include Rcqrs::Initializer
     include ActiveModel::Serializers::JSON
 

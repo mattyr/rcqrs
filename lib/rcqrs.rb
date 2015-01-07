@@ -18,8 +18,8 @@ require 'rcqrs/commands/invalid_command'
 require 'rcqrs/commands/active_model'
 require 'rcqrs/commands/handlers/base_handler'
 
-require 'rcqrs/events/domain_event'
-require 'rcqrs/events/handlers/base_handler'
+require 'rcqrs/event/base'
+require 'rcqrs/event/handler/base'
 
 require 'rcqrs/projectors/registry'
 require 'rcqrs/projectors/projector'
