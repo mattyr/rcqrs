@@ -1,16 +1,17 @@
 module Rcqrs::Commands
   module ActiveModel
-    def self.extended(base)
-      base.class_eval do
-        include ::ActiveModel::Conversion
-        include ::ActiveModel::AttributeMethods
-        include ::ActiveModel::Validations
-        extend ::ActiveModel::Naming
-        include Wisper::Publisher
+    extend ActiveSupport::Concern
 
-        include ::Rcqrs::Initializer
-        include ::Rcqrs::Commands::ActiveModel
-      end
+    included do
+      include ::ActiveModel::Conversion
+      include ::ActiveModel::AttributeMethods
+      include ::ActiveModel::Validations
+      include ::Wisper::Publisher
+
+      include ::Rcqrs::Initializer
+      include ::Rcqrs::Commands::ActiveModel
+
+      extend ::ActiveModel::Naming
     end
 
     # Commands are never persisted
