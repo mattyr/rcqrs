@@ -14,9 +14,9 @@ require 'rcqrs/bus/router'
 require 'rcqrs/bus/command_bus'
 require 'rcqrs/bus/event_bus'
 
-require 'rcqrs/commands/invalid_command'
-require 'rcqrs/commands/active_model'
-require 'rcqrs/commands/handlers/base_handler'
+require 'rcqrs/command/invalid_command'
+require 'rcqrs/command/base'
+require 'rcqrs/command/handler/base'
 
 require 'rcqrs/event/base'
 require 'rcqrs/event/handler/base'

@@ -1,6 +1,6 @@
-module Rcqrs::Commands
-  module Handlers
-    class BaseHandler
+module Rcqrs::Command
+  module Handler
+    class Base
       def initialize(repository)
         @repository = repository
       end

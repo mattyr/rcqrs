@@ -11,7 +11,7 @@ describe Rcqrs::Bus::CommandBus do
       subject { Commands::CreateCompanyCommand.new }
 
       it "should raise an InvalidCommand exception when the command is invalid" do
-        expect(proc { @bus.dispatch(subject) }).to raise_error(Rcqrs::Commands::InvalidCommand)
+        expect(proc { @bus.dispatch(subject) }).to raise_error(Rcqrs::Command::InvalidCommand)
         expect(subject.errors[:name]).to eq(["can't be blank"])
       end
     end
