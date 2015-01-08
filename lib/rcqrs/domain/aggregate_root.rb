@@ -25,6 +25,15 @@ module Rcqrs::Domain
       @replaying = false
     end
 
+    def command_scheduled(command, at)
+      event = Rcqrs::Event::CommandScheduled.new(
+        perform_at: at,
+        command_type: command.class.name,
+        command_attributes: command.attributes
+      )
+      apply(event)
+    end
+
     def replaying?
       @replaying
     end
@@ -44,6 +53,10 @@ module Rcqrs::Domain
       @source_version = @version
     end
 
+    def pending_commands
+      @scheduled_command_events.select{|c| c.perform_at > DateTime.now}.map(&:command)
+    end
+
     protected
 
     def initialize
@@ -51,6 +64,7 @@ module Rcqrs::Domain
       @source_version = 0
       @pending_events = []
       @event_handlers = {}
+      @scheduled_command_events = []
     end
 
     def apply(event)
@@ -91,6 +105,10 @@ module Rcqrs::Domain
           target = event_type.target_name
           "on_#{target}".to_sym
         end
+    end
+
+    def on_command_scheduled(event)
+      @scheduled_command_events << event
     end
   end
 end

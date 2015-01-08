@@ -1,5 +1,6 @@
 require 'uuidtools'
 require 'active_support'
+require 'active_job'
 require 'wisper'
 
 require 'rcqrs/support/guid'
@@ -17,9 +18,12 @@ require 'rcqrs/bus/event_bus'
 require 'rcqrs/command/invalid_command'
 require 'rcqrs/command/base'
 require 'rcqrs/command/handler/base'
+require 'rcqrs/command/scheduled_command_job'
 
 require 'rcqrs/event/base'
 require 'rcqrs/event/handler/base'
+require 'rcqrs/event/command_scheduled'
+require 'rcqrs/event/handler/command_scheduled_handler'
 
 require 'rcqrs/projectors/registry'
 require 'rcqrs/projectors/projector'

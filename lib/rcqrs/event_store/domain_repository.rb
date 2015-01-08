@@ -6,6 +6,8 @@ module Rcqrs::EventStore
   class DomainRepository
     include Wisper::Publisher
 
+    attr_reader :event_store
+
     def initialize(event_store)
       @event_store = event_store
       @tracked_aggregates = {}

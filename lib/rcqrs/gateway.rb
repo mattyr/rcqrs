@@ -4,8 +4,27 @@ module Rcqrs
     include ActiveSupport::Configurable
     include Singleton
 
+    # this seems to be only useful for testing
+    def self.reinitialize
+      instance.reinitialize
+    end
+
     def self.publish(command)
       instance.dispatch(command)
+    end
+
+    def self.publish_at(aggregate_id, command, at)
+      repository.transaction do
+        aggregate = repository.find(aggregate_id)
+
+        Rcqrs::Command::ScheduledCommandJob.
+          set(wait_until: at).
+          perform_later(aggregate_id, command.class.name, command.attributes)
+
+        aggregate.command_scheduled(command, at)
+
+        repository.save(aggregate)
+      end
     end
 
     def self.repository
@@ -34,17 +53,24 @@ module Rcqrs
       end
     end
 
-    private
-
-    def initialize
+    def reinitialize
       @repository = create_repository
       @command_bus = create_command_bus
       @event_bus = create_event_bus
 
+      # TODO: do we get leakage after multiple calls here?
       wire_events
     end
 
+    private
+
+    def initialize
+      reinitialize
+    end
+
     # Dispatch raised domain events
+    # TODO: this should not rely on Wisper, but rather be handled
+    # by some kind of core coordination object
     def wire_events
       @repository.on(:domain_event) {|event| @event_bus.publish(event) }
     end
@@ -62,7 +88,7 @@ module Rcqrs
     end
 
     def create_event_storage
-      config.event_store_adapter || EventStore::Adapters::InMemoryAdapter
+      config.event_store_adapter || EventStore::Adapters::InMemoryAdapter.new
     end
   end
 end

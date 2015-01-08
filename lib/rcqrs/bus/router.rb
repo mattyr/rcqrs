@@ -4,8 +4,16 @@ module Rcqrs::Bus
   class Router
     protected
     def handler_class_for(target)
-      handler_name = "#{target.class.name.gsub(/Event$|Command$/, '')}Handler"
-      handler_name.gsub!(/::/, '::Handlers::') if handler_name =~ /::/
+      # special case for command scheduled
+      handler_name =
+        if target.class == Rcqrs::Event::CommandScheduled
+          "Rcqrs::Event::Handler::CommandScheduledHandler"
+        else
+          "#{target.class.name.gsub(/Event$|Command$/, '')}Handler".tap do |name|
+            name.gsub!(/::/, '::Handlers::') if name =~ /::/
+          end
+        end
+
       handler_name.constantize
     rescue NameError
       raise MissingHandler.new("No handler found for #{target.class.name} (expected #{handler_name})")

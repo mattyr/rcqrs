@@ -20,11 +20,14 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport", "~> 4.2.0"
   spec.add_dependency "activerecord", "~> 4.2.0"
+  spec.add_dependency "activejob", "~> 4.2.0"
   spec.add_dependency "wisper", "~> 1.6.0"
   spec.add_dependency "uuidtools", "~> 2.1.5"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.1.0"
+  spec.add_development_dependency "delayed_job_active_record", "~> 4.0.3"
   spec.add_development_dependency "sqlite3", "~> 1.3.10"
+  spec.add_development_dependency "timecop", "~> 0.7.1"
 end

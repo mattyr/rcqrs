@@ -2,13 +2,8 @@ require 'spec_helper'
 
 describe Rcqrs::EventStore::Adapters::ActiveRecordAdapter do
   before(:each) do
-    # HACK? it seems some operations in AR need AR::Base to determine
-    # things like column names. without this we get errors like "no
-    # connection pool for ActiveRecord::Base".  This could be a bug or an
-    # architectural issue with AR connection management.
-    ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
     # Use an in-memory sqlite db
-    @adapter = Rcqrs::EventStore::Adapters::ActiveRecordAdapter.new(:adapter => 'sqlite3', :database => ':memory:')
+    @adapter = Rcqrs::EventStore::Adapters::ActiveRecordAdapter.new(TEST_DB_CONFIG)
     @aggregate = Domain::Company.create('ACME Corp')
   end
 
