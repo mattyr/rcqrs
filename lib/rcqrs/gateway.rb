@@ -13,13 +13,21 @@ module Rcqrs
       instance.dispatch(command)
     end
 
+    # publish_at, except now
+    def self.publish_async(aggregate_id, command)
+      publish_at(aggregate_id, command, nil)
+    end
+
     def self.publish_at(aggregate_id, command, at)
       repository.transaction do
         aggregate = repository.find(aggregate_id)
 
-        Rcqrs::Command::ScheduledCommandJob.
-          set(wait_until: at).
-          perform_later(aggregate_id, command.class.name, command.attributes)
+        job = Rcqrs::Command::ScheduledCommandJob
+        if !at.nil?
+          job = job.set(wait_until: at)
+        end
+
+        job.perform_later(aggregate_id, command.class.name, command.attributes)
 
         aggregate.command_scheduled(command, at)
 
