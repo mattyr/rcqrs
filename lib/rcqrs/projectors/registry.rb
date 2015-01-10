@@ -14,7 +14,7 @@ module Rcqrs::Projectors
 
     def register(klass)
       @projector_classes << klass
-      @projector_classes.uniq!
+      @projector_classes.uniq!{|k| k.name}
     end
 
     private
