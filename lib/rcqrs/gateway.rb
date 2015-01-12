@@ -29,9 +29,9 @@ module Rcqrs
 
         job.perform_later(aggregate_id, command.class.name, command.attributes)
 
-        aggregate.command_scheduled(command, at)
-
-        repository.save(aggregate)
+        if !at.nil?
+          aggregate.command_scheduled(command, at)
+        end
       end
     end
 
