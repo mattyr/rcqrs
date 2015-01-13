@@ -1,7 +1,6 @@
 module Domain
   class Invoice
-    include ::ActiveModel::Model
-
-    attr_accessor :number, :date, :description, :gross, :vat
+    include Rcqrs::Initializer
+    initializer :number, :date, :description, :gross, :vat, :attr_reader => true
   end
 end

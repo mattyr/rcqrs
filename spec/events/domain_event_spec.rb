@@ -4,7 +4,7 @@ module Events
   describe CompanyCreatedEvent do
     context "serialization" do
       before(:each) do
-        @event = CompanyCreatedEvent.new(guid: Rcqrs::Guid.create, name: 'ACME Corp')
+        @event = CompanyCreatedEvent.new(Rcqrs::Guid.create, 'ACME Corp')
       end
 
       it "should serialize to json" do
