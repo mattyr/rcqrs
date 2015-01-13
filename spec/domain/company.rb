@@ -11,12 +11,18 @@ module Domain
     end
 
     def change_name(new_name)
-      apply(Events::CompanyNameChangedEvent.new(new_name))
+      apply(Events::CompanyNameChangedEvent.new(name: new_name))
     end
 
     def create_invoice(number, date, description, amount)
       vat = amount * 0.175
-      apply(Events::InvoiceCreatedEvent.new(number, date, description, amount, vat))
+      apply(Events::InvoiceCreatedEvent.new(
+        number: number,
+        date: date,
+        description: description,
+        gross: amount,
+        vat: vat
+      ))
     end
 
     private

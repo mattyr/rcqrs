@@ -62,9 +62,9 @@ module Domain
     context "when loading from events" do
       before(:each) do
         events = [
-          Events::CompanyCreatedEvent.new(Rcqrs::Guid.create, 'ACME Corp'),
-          Events::InvoiceCreatedEvent.new('1', Time.now, '', 100, 17.5),
-          Events::InvoiceCreatedEvent.new('2', Time.now, '', 50, 17.5/2)
+          Events::CompanyCreatedEvent.new(guid: Rcqrs::Guid.create, name: 'ACME Corp'),
+          Events::InvoiceCreatedEvent.new(number: '1', date: Time.now, description: '', gross: 100, vat: 17.5),
+          Events::InvoiceCreatedEvent.new(number: '2', date: Time.now, description: '', gross: 50, vat: 17.5/2)
         ]
         events.each_with_index {|e, i| e.version = i + 1 }
 

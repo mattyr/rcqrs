@@ -3,7 +3,7 @@ module Projectors
     include Rcqrs::Projectors::Projector
 
     def on_company_created(event)
-      ::Reporting::Company.new(event.guid, event.name)
+      ::Reporting::Company.new(guid: event.guid, name: event.name)
     end
   end
 end

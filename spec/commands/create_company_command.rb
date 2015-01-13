@@ -1,8 +1,6 @@
 module Commands
   class CreateCompanyCommand < Rcqrs::Command::Base
-    attr_reader :name
+    attr_accessor :name
     validates_presence_of :name
-
-    initializer :name
   end
 end

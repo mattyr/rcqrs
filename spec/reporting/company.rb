@@ -1,12 +1,13 @@
 module Reporting
   class Company
-    include Rcqrs::Initializer
+    include ::ActiveModel::Model
 
     cattr_accessor(:instances) { [] }
 
-    attr_reader :guid, :name
+    attr_accessor :guid, :name
 
-    initializer :guid, :name do
+    def initialize(attributes = {})
+      super
       Reporting::Company.instances << self
     end
   end

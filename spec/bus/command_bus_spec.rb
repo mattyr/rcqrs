@@ -17,7 +17,7 @@ describe Rcqrs::Bus::CommandBus do
     end
 
     context "valid command" do
-      subject { Commands::CreateCompanyCommand.new('foo') }
+      subject { Commands::CreateCompanyCommand.new(name: 'foo') }
 
       it "should execute handler for given command" do
         @bus.dispatch(subject)

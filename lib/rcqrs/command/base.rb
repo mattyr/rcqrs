@@ -1,16 +1,21 @@
 module Rcqrs::Command
   class Base
-    extend ::ActiveModel::Naming
-
-    include ::ActiveModel::Conversion
-    include ::ActiveModel::AttributeMethods
-    include ::ActiveModel::Validations
+    include ::ActiveModel::Model
     include ::Wisper::Publisher
-    include ::Rcqrs::Initializer
 
-    # Commands are never persisted
-    def persisted?
-      false
+    def attributes=(hash)
+      hash.each do |key, value|
+        send("#{key}=", value)
+      end
+    end
+
+    def attributes
+      instance_values
+    end
+
+    def initialize(attributes = {})
+      super
+      self.attributes = attributes
     end
 
     def broadcast_domain_event(event)

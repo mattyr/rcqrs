@@ -1,7 +1,5 @@
 module Events
   class CompanyNameChangedEvent < Rcqrs::Event::Base
-    attr_reader :name
-
-    initializer :name
+    attr_accessor :name
   end
 end
