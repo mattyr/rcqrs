@@ -12,7 +12,7 @@ module Rcqrs::Event
     end
 
     def attributes
-      instance_values.except(*%w{aggregate_id version timestamp})
+      instance_values.with_indifferent_access.except(:aggregate_id, :version, :timestamp)
     end
 
     def initialize(attributes = {})
