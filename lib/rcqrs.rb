@@ -4,7 +4,6 @@ require 'active_job'
 require 'wisper'
 
 require 'rcqrs/support/guid'
-require 'rcqrs/support/initializer'
 
 require 'rcqrs/event_store/domain_event_storage'
 require 'rcqrs/event_store/domain_repository'
