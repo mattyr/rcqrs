@@ -67,6 +67,12 @@ module Rcqrs
             send(:attr_reader, attr)
           end
         end
+
+        if last[:attr_accessor] == true
+          args.each do |attr|
+            send(:attr_accessor, attr)
+          end
+        end
       end
     end
 
