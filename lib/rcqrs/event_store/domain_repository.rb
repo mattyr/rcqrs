@@ -39,12 +39,15 @@ module Rcqrs::EventStore
     def transaction(&block)
       @transaction_stack_level += 1
 
-      yield and return if @transaction_stack_level > 1
-
-      @event_store.transaction do
+      if @transaction_stack_level > 1
         yield
-        persist_aggregates_to_event_store
+      else
+        @event_store.transaction do
+          yield
+          persist_aggregates_to_event_store
+        end
       end
+
     rescue
       @tracked_aggregates.clear # abandon changes on exception
       raise
