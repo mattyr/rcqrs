@@ -48,6 +48,20 @@ describe Rcqrs::EventStore::DomainRepository do
     end
   end
 
+  context "nested transactions" do
+    it "remains in a transaction when leaving nested transaction scope" do
+      @repository.transaction do
+        expect(@repository.within_transaction?).to be_truthy
+        @repository.save(@aggregate)
+        @repository.transaction do
+          expect(@repository.within_transaction?).to be_truthy
+          @repository.save(@aggregate)
+        end
+        expect(@repository.within_transaction?).to be_truthy
+      end
+    end
+  end
+
   context "when finding an aggregate that does not exist" do
     it "should raise an EventStore::AggregateNotFound exception" do
       expect(proc { @repository.find('missing') }).to raise_error(Rcqrs::EventStore::AggregateNotFound)

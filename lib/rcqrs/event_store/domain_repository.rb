@@ -11,7 +11,7 @@ module Rcqrs::EventStore
     def initialize(event_store)
       @event_store = event_store
       @tracked_aggregates = {}
-      @within_transaction = false
+      @transaction_stack_level = 0
     end
 
     # Persist the +aggregate+ to the event store
@@ -37,9 +37,9 @@ module Rcqrs::EventStore
 
     # Save changes to the event store within a transaction
     def transaction(&block)
-      yield and return if within_transaction?
+      @transaction_stack_level += 1
 
-      @within_transaction = true
+      yield and return if @transaction_stack_level > 1
 
       @event_store.transaction do
         yield
@@ -49,11 +49,11 @@ module Rcqrs::EventStore
       @tracked_aggregates.clear # abandon changes on exception
       raise
     ensure
-      @within_transaction = false
+      @transaction_stack_level -= 1
     end
 
     def within_transaction?
-      @within_transaction
+      @transaction_stack_level > 0
     end
 
   private
