@@ -11,6 +11,7 @@ module Rcqrs::EventStore
     def initialize(event_store)
       @event_store = event_store
       @tracked_aggregates = {}
+      @committed_events = []
       @transaction_stack_level = 0
     end
 
@@ -46,10 +47,12 @@ module Rcqrs::EventStore
           yield
           persist_aggregates_to_event_store
         end
+        broadcast_committed_events
       end
 
     rescue
       @tracked_aggregates.clear # abandon changes on exception
+      @committed_events.clear
       raise
     ensure
       @transaction_stack_level -= 1
@@ -78,13 +81,18 @@ module Rcqrs::EventStore
         tracked.commit
       end
 
-      committed_events.sort_by(&:timestamp).each do |event|
+      @committed_events += committed_events.sort_by(&:timestamp)
+    end
+
+    def broadcast_committed_events
+      @committed_events.each do |event|
         broadcast(:domain_event, event)
         # if there's a command context, broadcast through that as well
         if !Rcqrs::Context.current.command.nil?
           Rcqrs::Context.current.command.broadcast_domain_event(event)
         end
       end
+      @committed_events.clear
     end
 
     # Get unsaved events for all tracked aggregates, ordered by time applied

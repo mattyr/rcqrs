@@ -31,6 +31,28 @@ describe Rcqrs::EventStore::DomainRepository do
     end
   end
 
+  context "when event handlers raise errors" do
+    before(:each) do
+      @repository.on(:domain_event) { raise "This is an exception" }
+    end
+
+    it "save should raise the original exception" do
+      expect{@repository.save(@aggregate)}.to raise_error
+    end
+
+    context "and aggregate saved" do
+      before { begin; @repository.save(@aggregate); rescue; end; }
+
+      it "should still persist the aggregate" do
+        expect(@storage.find(@aggregate.guid)).to_not be_nil
+      end
+
+      it "should still persist the events that occurred" do
+        expect(@storage.find(@aggregate.guid).events.length).to eq(1)
+      end
+    end
+  end
+
   context "when saving an aggregate within a transaction" do
     before(:each) do
       @repository.transaction do
