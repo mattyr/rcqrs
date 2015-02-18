@@ -102,7 +102,7 @@ module Rcqrs
     end
 
     def create_event_storage
-      config.event_store_adapter || EventStore::Adapters::InMemoryAdapter.new
+      Rcqrs::Gateway.config.event_store_adapter || EventStore::Adapters::InMemoryAdapter.new
     end
   end
 end
