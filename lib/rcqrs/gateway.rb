@@ -2,15 +2,21 @@
 module Rcqrs
   class Gateway
     include ActiveSupport::Configurable
-    include Singleton
+
+    # a thread-local singleton, because the domainrepository
+    # is not thread safe, but many can exist in parallel
+    def self.current
+      Thread.current['Rcqrs::Gateway.current'] ||=
+        Rcqrs::Gateway.new
+    end
 
     # this seems to be only useful for testing
     def self.reinitialize
-      instance.reinitialize
+      current.reinitialize
     end
 
     def self.publish(command)
-      instance.dispatch(command)
+      current.dispatch(command)
     end
 
     # publish_at, except now
@@ -36,15 +42,15 @@ module Rcqrs
     end
 
     def self.repository
-      instance.repository
+      current.repository
     end
 
     def self.command_bus
-      instance.command_bus
+      current.command_bus
     end
 
     def self.event_bus
-      instance.event_bus
+      current.event_bus
     end
 
     attr_reader :repository, :command_bus, :event_bus
@@ -61,6 +67,10 @@ module Rcqrs
       end
     end
 
+    def initialize
+      reinitialize
+    end
+
     def reinitialize
       @repository = create_repository
       @command_bus = create_command_bus
@@ -71,10 +81,6 @@ module Rcqrs
     end
 
     private
-
-    def initialize
-      reinitialize
-    end
 
     # Dispatch raised domain events
     # TODO: this should not rely on Wisper, but rather be handled
