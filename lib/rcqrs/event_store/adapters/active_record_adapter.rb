@@ -76,6 +76,7 @@ module Rcqrs::EventStore
             :aggregate_id => event.aggregate_id,
             :event_type => event.class.name,
             :version => event.version,
+            :created_at => event.timestamp,
             :data => event.attributes_to_json)
         end
       end
