@@ -132,6 +132,9 @@ module Rcqrs::EventStore
       event.event_type.constantize.new.from_json(event.data).tap do |domain_event|
         domain_event.version = event.version.to_i
         domain_event.aggregate_id = event.aggregate_id.to_s
+        # hack: this naming should be consistent, or stored in the json data.
+        # this is ar-adapter specific.
+        domain_event.timestamp = event.try(:created_at)
       end
     end
   end
