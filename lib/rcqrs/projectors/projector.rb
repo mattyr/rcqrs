@@ -12,6 +12,16 @@ module Rcqrs::Projectors
       end
     end
 
+    def reproject(event)
+      @reprojecting = true
+      project(event)
+      @reprojecting = false
+    end
+
+    def reprojecting?
+      @reprojecting
+    end
+
     private
 
     def handler_method_names

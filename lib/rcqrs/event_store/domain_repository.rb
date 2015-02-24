@@ -36,6 +36,19 @@ module Rcqrs::EventStore
       load_aggregate(provider.aggregate_type, provider.events)
     end
 
+    # pushes all events for the aggregate with the given guid to projectors
+    def reproject!(guid)
+      provider = @event_store.find(guid)
+
+      raise AggregateNotFound if provider.nil?
+
+      provider.events.map{|event| create_event(event)}.sort_by{|e| e.version}.each do |event|
+        Rcqrs::Projectors::Registry.projectors.each do |projector|
+          projector.reproject(event)
+        end
+      end
+    end
+
     # Save changes to the event store within a transaction
     def transaction(&block)
       @transaction_stack_level += 1
