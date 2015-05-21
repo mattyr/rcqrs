@@ -13,6 +13,18 @@ module Rcqrs::EventStore
       def events
         Event.for(aggregate_id).to_a
       end
+
+      # these are dangerous methods
+      def remove_event(event)
+        v = event.version
+        # delete the event
+        Event.where(aggregate_id: aggregate_id, version: event.version).delete_all
+        # shift the versions for all events after
+        connection.execute("UPDATE #{self.table_name} SET version = (version - 1) WHERE aggregate_id = '#{aggregate_id}' AND version > #{v}")
+        # decrement the version of the aggregate
+        update_columns(version: version - 1)
+      end
+
     end
 
     class Event < ActiveRecord::Base
