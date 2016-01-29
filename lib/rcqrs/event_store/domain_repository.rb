@@ -61,6 +61,7 @@ module Rcqrs::EventStore
           persist_aggregates_to_event_store
         end
         broadcast_committed_events
+        @tracked_aggregates.clear
       end
 
     rescue
@@ -114,9 +115,9 @@ module Rcqrs::EventStore
     # end
 
     # Recreate an aggregate root by re-applying all saved +events+
-    def load_aggregate(klass, events)
+    def load_aggregate(klass, stored_events)
       create_aggregate(klass).tap do |aggregate|
-        events.map! {|event| create_event(event) }
+        events = stored_events.map {|stored_event| create_event(stored_event) }
         aggregate.load(events)
         track(aggregate)
       end

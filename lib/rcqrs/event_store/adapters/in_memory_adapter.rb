@@ -10,7 +10,12 @@ module Rcqrs::EventStore
           @aggregate_id = aggregate.guid
           @aggregate_type = aggregate.class.name
           @version = aggregate.version
-          @events = aggregate.pending_events.map {|e| Event.new(e) }
+          # freeze to prevent accidental modification of the stored val
+          @events = aggregate.pending_events.map {|e| Event.new(e) }.freeze
+        end
+
+        def events
+          @events
         end
       end
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rcqrs (0.2.0)
+    rcqrs (0.2.1)
       activejob (~> 4.2.0)
       activerecord (~> 4.2.0)
       activesupport (~> 4.2.0)
