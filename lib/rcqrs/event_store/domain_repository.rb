@@ -37,13 +37,15 @@ module Rcqrs::EventStore
     end
 
     # pushes all events for the aggregate with the given guid to projectors
-    def reproject!(guid)
+    def reproject!(guid, projectors = Rcqrs::Projectors::Registry.projectors)
       provider = @event_store.find(guid)
+
+      projectors = [projectors].flatten # in case just 1
 
       raise AggregateNotFound if provider.nil?
 
       provider.events.map{|event| create_event(event)}.sort_by{|e| e.version}.each do |event|
-        Rcqrs::Projectors::Registry.projectors.each do |projector|
+        projectors.each do |projector|
           projector.reproject(event)
         end
       end
